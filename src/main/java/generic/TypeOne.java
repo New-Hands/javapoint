@@ -8,6 +8,7 @@ package generic;
  * 那么这个方法的编写者怎么确定当前类型的处理方式？
  * 那么这种数据处理方式一定是与数据类型无关的
  * </p>
+ * <P></P>
  */
 public class TypeOne<T> {
     private T t ;
@@ -18,6 +19,10 @@ public class TypeOne<T> {
         return (T) "he";
     }
 
+    /**
+     * 测试
+     * @param args
+     */
     public static void main(String[] args) {
         TypeOne<String> stringTypeOne = new TypeOne<>();
         System.out.println(stringTypeOne.saySome("hello"));

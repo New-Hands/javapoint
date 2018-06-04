@@ -7,6 +7,7 @@ package interfacedemo;
  */
 @FunctionalInterface
 public interface FunctionalInterfacedemo {
+
     String sayHi(String str);
 }
 
