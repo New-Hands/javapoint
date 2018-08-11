@@ -11,7 +11,6 @@ public interface DefaultMethodDemo {
      * @return 计算值
      */
     double calculate(double p);
-
     /**
      * 得到参数的开方数
      * @param a  被开方的参数

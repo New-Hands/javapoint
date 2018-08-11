@@ -18,7 +18,7 @@ public class LambdaDemo {
 }
 
 /**
- *
+ * 接收lambda参数
  */
 class LambdaClass {
     static void sayHI(LambdaInterface hi) {
@@ -27,7 +27,7 @@ class LambdaClass {
 }
 
 /**
- *
+ * lambda接口
  */
 interface LambdaInterface {
     /**

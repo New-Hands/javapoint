@@ -19,7 +19,6 @@ public interface Converter<V> {
 
 class FunctionalInterfaceTest {
     public static void main(String[] args) {
-
         Converter<String> converter = (from -> {
             char [] chars = from.toCharArray();
             System.out.println(chars[1]);
