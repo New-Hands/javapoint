@@ -9,6 +9,10 @@ package thread;
  */
 public class ThisEscape {
 
+    /**
+     * 在构造函数中 对象未构造完成之前使用对象this指针
+     * @param resource
+     */
     public ThisEscape(EventResource resource) {
         //练习使用了lambda表达式
         resource.register((event) -> {
