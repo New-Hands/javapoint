@@ -16,8 +16,12 @@ public class HelloHandler implements InvocationHandler {
         System.out.println("one");
         //选择目标对象
 
-        Object invoke = method.invoke(new HelloImpl(),args);
+        /**
+         * 也可以不去使用对象的方法
+         * 我的目的就是动态的生成一个对象
+         */
+       // Object invoke = method.invoke(new HelloImpl(),args);
         System.out.println("two");
-        return invoke;
+        return null;
     }
 }
