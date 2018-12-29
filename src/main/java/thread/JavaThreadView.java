@@ -10,16 +10,13 @@ package thread;
 public class JavaThreadView {
 
     public static void main(String[] args) {
-        Thread threadOne = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.out.println("hrrlo1");
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        Thread threadOne = new Thread(() -> {
+            while (true) {
+                System.out.println("hrrlo1");
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         });

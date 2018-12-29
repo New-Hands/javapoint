@@ -7,7 +7,7 @@ public class HelloHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
+        //可以对方法名进行过滤 Method实例
         if (method.getName().equals("sayHello")) {
             return  method.invoke(new HelloImpl(),args);
         }

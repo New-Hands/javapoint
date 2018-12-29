@@ -9,18 +9,30 @@ package thread;
  */
 public class ThisEscape {
 
+    int a = 0;
     /**
      * 在构造函数中 对象未构造完成之前使用对象this指针
      * @param resource
      */
     public ThisEscape(EventResource resource) {
-        //练习使用了lambda表达式
+        //练习使用了lambda表达式 这里是内部类
         resource.register((event) -> {
             //暴露了隐式的引用 导致可以提前的使用到对象的方法 这是错误的做法
             doSomeThing(event);
+            /**
+             *
+             */
+            ThisEscape.this.doSomeThing(event);
+
         });
+
+        a = 4;
     }
 
+    /**
+     *
+     * @param event
+     */
     public void doSomeThing(Event event) {
 
     }

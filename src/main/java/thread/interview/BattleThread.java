@@ -1,7 +1,8 @@
 package thread.interview;
 
 /**
- *
+ * @author 李尚庭
+ * @date 2018-9-10 上午 10:10 
  */
 public class BattleThread implements Runnable {
 
@@ -17,8 +18,8 @@ public class BattleThread implements Runnable {
     }
 
     public synchronized void m1() throws InterruptedException {
-        b = 1000;
-        Thread.sleep(500);
+        //b = 1000;
+        //Thread.sleep(500);
         System.out.println(Thread.currentThread().getName()+"m1 b="+ b+ (System.currentTimeMillis()-time));
     }
 
