@@ -1,5 +1,6 @@
 package netty;
 
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -23,6 +24,9 @@ public class ChannelHandler extends ChannelInboundHandlerAdapter {
             ctx.write("hello");
             ctx.flush();
             //监听分发的请求
+            //模拟http返回
+            ctx.write("200 ok ");
+            ctx.write(" ");
         } finally {
             //处理实现了对应接口的对象
         }
