@@ -3,10 +3,7 @@ package netty;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpMessage;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.*;
 import io.netty.util.AsciiString;
 
 /**
@@ -40,10 +37,18 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
-        FullHttpMessage response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(CONTENT));
-        response.headers();
-        ctx.write(response);
+        HttpResponse httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,HttpResponseStatus.OK);
+        httpResponse.headers().set(CONTENT_TYPE, "application/json; charset=utf-8");
+
+        System.out.println(((DefaultFullHttpResponse) httpResponse).touch().toString());
+        System.out.println("http in");
+        StringBuilder http = new StringBuilder();
+        http.append("HTTP/1.1 200 OK\r\n");
+        http.append("Content-Type: application/json; charset=utf-8\r\n");
+        http.append("\r\n");
+        http.append("{}\n");
+        System.out.println(http.toString());
+        ctx.write(http.toString());
         ctx.flush();
 
     }
