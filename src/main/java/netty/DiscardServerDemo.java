@@ -9,8 +9,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpRequestEncoder;
-import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
 /**
@@ -22,6 +20,7 @@ import io.netty.handler.codec.string.StringEncoder;
 public class DiscardServerDemo {
 
     private int port;
+
     public DiscardServerDemo(int port) {
         this.port = port;
     }
@@ -36,32 +35,23 @@ public class DiscardServerDemo {
             //通道和缓冲区概念
             serverBootstrap.group(bossGroup, workGroup).
                     //会通过反射建立channel对象
-                    channel(NioServerSocketChannel.class).
+                            channel(NioServerSocketChannel.class).
                     childHandler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
 
                             //回过头来 你会突然发现
-                              ChannelPipeline pipeline = ch.pipeline();
-//                            pipeline.addLast(new StringDecoder());
-//                            pipeline.addLast(new StringEncoder());
-//                            pipeline.addLast(new ChannelHandler());
-
-                            //http handler
-//                          ChannelPipeline pipeline = ch.pipeline();
-//                          pipeline.addLast(new HttpServerCodec());
-//                          pipeline.addLast(new HttpServerExpectContinueHandler());
-//                          pipeline.addLast(new HttpServerHandler());
-
+                            ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new StringEncoder());
-                          //  pipeline.addLast(new HttpRequestEncoder());
 
+
+                            pipeline.addLast(new HttpRequestDecoder());
                             pipeline.addLast(new HttpServerHandler());
 
                         }
                     }).
                     //设置返回信息？？
-                    option(ChannelOption.SO_BACKLOG, 128).
+                            option(ChannelOption.SO_BACKLOG, 128).
                     childOption(ChannelOption.AUTO_READ, true).
                     childOption(ChannelOption.AUTO_CLOSE, true).
                     childOption(ChannelOption.SO_KEEPALIVE, false);
@@ -72,7 +62,7 @@ public class DiscardServerDemo {
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             workGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }

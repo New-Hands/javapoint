@@ -4,6 +4,8 @@ package thread;
  * <P>错误的可见性示范 可能看不见修改后的值</P>
  * <P>这里充满了不确定性</P>
  * <P>比原书更好的可见性例子</P>
+ * volatile变量规则：对一个volatile域的写，happens-before于任意后续对这个volatile域的读。
+ *
  *
  * @author lst
  */

@@ -6,8 +6,10 @@ public class BucketSort {
     }
 
     public static void bucket(int[] arr) {
-        int[] bucket = new int[arr.length];
+        //初始化桶 需要一个适合场景的大小
+        int[] bucket = new int[10000];
         for (int i = 0; i < arr.length; i++) {
+
         }
     }
 }

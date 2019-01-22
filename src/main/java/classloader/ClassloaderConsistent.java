@@ -8,9 +8,10 @@ package classloader;
  */
 public class ClassloaderConsistent {
     public static void main(String[] args) {
-        if (A.class.getClassLoader() == A.class.getClassLoader()) {
+        if (A.class.getClassLoader() == B.class.getClassLoader()) {
             A.class.getResourceAsStream("");
-            System.out.println("true");
+            System.out.println(System.getProperty("lst"));
+            System.out.println(A.class.getClassLoader().toString());
         }
     }
 }
