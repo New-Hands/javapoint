@@ -8,8 +8,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.codec.http.*;
+
 
 /**
  * <p>分发服务器</p>
@@ -19,6 +19,9 @@ import io.netty.handler.codec.string.StringEncoder;
  */
 public class DiscardServerDemo {
 
+    /**
+     * 监听端口
+     */
     private int port;
 
     public DiscardServerDemo(int port) {
@@ -35,32 +38,28 @@ public class DiscardServerDemo {
             //通道和缓冲区概念
             serverBootstrap.group(bossGroup, workGroup).
                     //会通过反射建立channel对象
-                            channel(NioServerSocketChannel.class).
+                    channel(NioServerSocketChannel.class).
                     childHandler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
-
-                            //回过头来 你会突然发现
+                            //转发器不用处理数据
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new StringEncoder());
-
-
+                            // 几种不同http解码方式
                             pipeline.addLast(new HttpRequestDecoder());
+                            //http聚合
+                            pipeline.addLast(new HttpObjectAggregator(65536));
                             pipeline.addLast(new HttpServerHandler());
 
+                            //pipeline.addLast(new HttpResponseEncoder());
                         }
                     }).
-                    //设置返回信息？？
-                            option(ChannelOption.SO_BACKLOG, 128).
-                    childOption(ChannelOption.AUTO_READ, true).
-                    childOption(ChannelOption.AUTO_CLOSE, true).
-                    childOption(ChannelOption.SO_KEEPALIVE, false);
-
+                    //自动调用channelRead方法
+                    childOption(ChannelOption.AUTO_READ, true);
             ChannelFuture future = serverBootstrap.bind(port).sync();
             System.out.println("http server start");
             //在此阻塞到结束
             future.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             workGroup.shutdownGracefully();
