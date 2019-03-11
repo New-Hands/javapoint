@@ -1,7 +1,11 @@
 package SystemClass;
 
 /**
- * <p>System类</p>
+ * <p>
+ *     System类
+ *     获取环境
+ *     获取属性
+ * </p>
  *
  * @author 李尚庭
  * @date 2019-1-19
@@ -19,6 +23,7 @@ public class SystemTest {
 
     /**
      * 获取
+     *
      * @param args
      */
     public static void main(String[] args) {

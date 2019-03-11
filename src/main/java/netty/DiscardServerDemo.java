@@ -53,6 +53,8 @@ public class DiscardServerDemo {
                             //pipeline.addLast(new HttpResponseEncoder());
                         }
                     }).
+                    //设置连接队列的大小
+                    childOption(ChannelOption.SO_BACKLOG,128).
                     //自动调用channelRead方法
                     childOption(ChannelOption.AUTO_READ, true);
             ChannelFuture future = serverBootstrap.bind(port).sync();

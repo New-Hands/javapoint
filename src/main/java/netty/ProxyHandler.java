@@ -33,7 +33,6 @@ public class ProxyHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) {
         //调用read()方法
         System.out.println("代理请求连接建立！");
-        //
     }
 
     /**
@@ -47,7 +46,7 @@ public class ProxyHandler extends ChannelInboundHandlerAdapter {
         //调用请求端连接 回复代理请求的数据
         System.out.println("回复客户！");
         if (msg instanceof HttpResponse) {
-            System.out.println("http");
+
         }else {
             ByteBuf byteBuf = (ByteBuf) msg;
 

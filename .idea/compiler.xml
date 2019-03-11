@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="javapoint" />
+        <module name="helloagent" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.8">
-      <module name="javapoint" target="1.8" />
+    <bytecodeTargetLevel target="11">
+      <module name="helloagent" target="11" />
+      <module name="javapoint" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

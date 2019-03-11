@@ -7,6 +7,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.*;
+import io.netty.util.ReferenceCountUtil;
 
 import java.nio.charset.Charset;
 
@@ -42,8 +43,8 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
     /**
      * 在连接建立之后
      *
-     * @param ctx
-     * @param msg
+     * @param ctx 上下文
+     * @param msg 网路数据
      * @throws Exception
      */
     @Override
@@ -51,26 +52,35 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
         //获取客户请求
         System.out.println("接收客户请求");
         //判断请求的类型 简单的get请求 和 带表单的http请求 其他格式的请求
-        HttpRequest httpRequest = (HttpRequest) msg;
-        System.out.println(httpRequest.uri());
-       if (HttpMethod.CONNECT.name().equalsIgnoreCase(httpRequest.method().name())) {
-            //HTTPS建立代理握手
-            HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-            ctx.writeAndFlush(response);
-            return;
-        }
+        if (msg instanceof HttpRequest) {
+            HttpRequest httpRequest = (HttpRequest) msg;
 
-        System.out.println(httpRequest.protocolVersion());
+            //https 连接
+            if (httpRequest.method().equals(HttpMethod.CONNECT)) {
 
-        //通过header获取
-        String [] split = httpRequest.headers().get("host").split(":");
-        int i = 2;
-        int remotePort = 80;
-        if (split.length == i) {
-             remotePort = Integer.valueOf(split[1]);
+            }
+
+            System.out.println("to:"+httpRequest.uri());
+            if (HttpMethod.CONNECT.name().equalsIgnoreCase(httpRequest.method().name())) {
+                //HTTPS建立代理握手
+                System.out.println("https 建立请求");
+            }
+            //通过header获取
+            String [] split = httpRequest.headers().get("host").split(":");
+            int i = 2;
+            int remotePort = 80;
+            if (split.length == i) {
+                remotePort = Integer.valueOf(split[1]);
+            }
+            //连接地址
+            System.out.println(split[0]+remotePort);
+            proxyRequest(ctx,split[0], remotePort, msg);
+        }else {
+            //如果不是HttpRequest类型 直接转发加密流 不去解析 不使用转发直接沟通 因为连接是存在的
+            System.out.println("流数据" + ctx.channel().remoteAddress());
+            //释放内存
+            ReferenceCountUtil.release(msg);
         }
-        //连接地址
-        proxyRequest(ctx,"juejin.im", remotePort, msg);
 
     }
 
@@ -120,9 +130,9 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
     /**
      * <p>创建请求客户端</p>
      *
-     * @param ctx
-     * @param remoteHost
-     * @param remotePort
+     * @param ctx 上下文
+     * @param remoteHost 远程地址
+     * @param remotePort 远程端口
      * @param msg
      */
     private void proxyRequest(ChannelHandlerContext ctx, String remoteHost, int remotePort, Object msg) {
@@ -158,8 +168,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
                         @Override
                         public void operationComplete(ChannelFuture future) {
                             if (future.isSuccess()) {
-                                System.out.println(outboundChannel.remoteAddress());
-                                future.channel().read();
+                               future.channel().read();
                             } else {
                                 System.out.println("处理失败");
                                 future.channel().close();
@@ -195,5 +204,4 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
             ch.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
         }
     }
-
 }

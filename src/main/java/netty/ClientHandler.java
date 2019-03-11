@@ -22,7 +22,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<String> {
     public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         try {
             System.out.println(msg);
-            ctx.write("hello");
+            ctx.write(msg);
             ctx.flush();
             ctx.close();
         } finally {

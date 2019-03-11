@@ -13,5 +13,14 @@ public class ClassloaderConsistent {
             System.out.println(System.getProperty("lst"));
             System.out.println(A.class.getClassLoader().toString());
         }
+        System.out.println(System.getProperties());
+        //appClassLoader
+        ClassLoader contextClassLoader1 = Thread.currentThread().getContextClassLoader();
+        System.out.println(contextClassLoader1);
+        //appClassLoader
+        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+        System.out.println(systemClassLoader);
+
+
     }
 }
