@@ -1,8 +1,7 @@
 package jmx;
 
 
-import com.sun.tools.attach.VirtualMachine;
-import com.sun.tools.attach.VirtualMachineDescriptor;
+import com.sun.tools.attach.*;
 
 import javax.management.*;
 import javax.management.remote.JMXConnector;
@@ -11,8 +10,6 @@ import javax.management.remote.JMXServiceURL;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 
 /**
@@ -26,11 +23,12 @@ import java.util.stream.Stream;
 public class JMXDemo {
     public static final String URL = "";
 
+    public static final String AGENT_URL = "F:\\ideaProject\\javapoint\\helloagent\\target\\helloagent-1.0-SNAPSHOT.jar";
 
     public static void main(String[] args) {
         JMXDemo demo = new JMXDemo();
-        demo.connect1();
 
+        demo.connect1();
     }
 
     /**
@@ -41,8 +39,20 @@ public class JMXDemo {
         //Steam的for循环
         list.stream().
                 forEach(virtualMachineDescriptor -> System.out.println(virtualMachineDescriptor.id()));
+        //通过attach机制 jvti
+        try {
+            VirtualMachine attach = VirtualMachine.attach("7244");
+            attach.loadAgent(AGENT_URL);
+        } catch (AttachNotSupportedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (AgentInitializationException e) {
+            e.printStackTrace();
+        } catch (AgentLoadException e) {
+            e.printStackTrace();
+        }
 
-        Stream<VirtualMachineDescriptor> stream = list.stream();
 
 
     }
