@@ -24,13 +24,13 @@ public class Hello{
     }
 
     /**
-     *  动态load
+     *
      * @param args
      * @param inst
-     * @throws Exception
      */
     private static void agentmain(String args, Instrumentation inst) throws Exception
     {
-        System.out.println("-------- Agent Start -------------");
+        //动态加载 add的
+       inst.retransformClasses();
     }
 }

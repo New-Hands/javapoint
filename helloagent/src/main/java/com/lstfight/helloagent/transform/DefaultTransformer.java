@@ -20,10 +20,11 @@ public class DefaultTransformer implements ClassFileTransformer {
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        if (className.indexOf("OrderController") < 0 || loader == null) {
+        if (className.equals("OrderController") || loader == null) {
             return null;
         }
         try {
+            System.out.println(className);
             className = className.replace("/", ".");
             CtClass ctClass = ClassPool.getDefault().get(className);
             CtMethod[] methods = ctClass.getMethods();
@@ -34,6 +35,7 @@ public class DefaultTransformer implements ClassFileTransformer {
                     CtMethod declaredMethod = ctClass.getDeclaredMethod(method.getName());
                     //使用"" 需要转义
                     //可以使用$ 获取方法参数
+                    System.out.println("insert into" + method.getName());
                     declaredMethod.insertBefore("System.out.println(\"agent magic\");");
                 }
             }

@@ -41,7 +41,7 @@ public class JMXDemo {
                 forEach(virtualMachineDescriptor -> System.out.println(virtualMachineDescriptor.id()));
         //通过attach机制 jvti
         try {
-            VirtualMachine attach = VirtualMachine.attach("7244");
+            VirtualMachine attach = VirtualMachine.attach("8596");
             attach.loadAgent(AGENT_URL);
         } catch (AttachNotSupportedException e) {
             e.printStackTrace();
